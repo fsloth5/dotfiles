@@ -94,43 +94,29 @@ return {
 		opts.root_dir = function() return vim.loop.cwd() end
 	end,
 
-	configure_clangd = function(opts)
-		opts.cmd = { "clangd", "--clang-tidy" }
+	configure_clangd = function(server)
+		server.cmd = { "clangd", "--clang-tidy" }
 	end,
 
-	configure_ts_ls = function(opts)
-		opts.root_dir = lsp_utils.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json')
-		opts.single_file_support = false
+	configure_ts_ls = function(server)
+		server.root_dir = lsp_utils.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json')
+		server.single_file_support = false
 	end,
 
-	configure_denols = function(opts)
-		opts.root_dir = lsp_utils.root_pattern('deno.json', 'deno.jsonc')
+	configure_denols = function(server)
+		server.root_dir = lsp_utils.root_pattern('deno.json', 'deno.jsonc')
 	end,
 
-	configure_tailwindcss = function(server, opts)
-		opts.filetypes = server.config_def.default_config.filetypes
-
-		local filetypes = {}
-
-		for _, filetype in ipairs(opts.filetypes) do
-			if not (filetype == "javascript" or filetype == "typescript") then
-				table.insert(filetypes, filetype)
-			end
-		end
-
-		opts.filetypes = filetypes
+	configure_sourcekit = function(server)
+		server.filetypes = { "swift", "objc", "objcpp" }
 	end,
 
-	configure_sourcekit = function(opts)
-		opts.filetypes = { "swift", "objc", "objcpp" }
+	configure_purescriptls = function(server)
+		server.settings = { purescript = { formatter = "purs-tidy" } }
 	end,
 
-	configure_purescriptls = function(opts)
-		opts.settings = { purescript = { formatter = "purs-tidy" } }
-	end,
-
-	configure_hls = function(opts)
-		opts.settings = {
+	configure_hls = function(server)
+		server.settings = {
 			haskell = {
 				formattingProvider = "stylish-haskell",
 				plugin = {

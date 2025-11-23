@@ -1,5 +1,5 @@
-local lspconfig = require "lspconfig"
 
+local lspconfig = require "lspconfig"
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "single" })
 
@@ -56,31 +56,34 @@ local lsp_utils = require "conf_utils.lsp"
 local servers = lsp_utils.servers
 
 for _, lsp in pairs(servers) do
-	local server = lspconfig[lsp]
+	local server = vim.lsp.config[lsp]
 
-	local opts = {
-		on_attach    = lsp_utils.on_attach,
-		capabilities = capabilities
-	}
+	server.on_attach = function(_, bufnr)
+		lsp_utils.on_attach.on_attach(_,bufnr)	
+		server.on_attach(_, bufnr)
+	end
+
+	local server_caps = server.capabilities
+	for k,v in ipairs(capabilities) do 
+		server_caps[k] = v
+	end
 
 
 	if server.name == "clangd" then
-		lsp_utils.configure_clangd(opts)
+		lsp_utils.configure_clangd(server)
 	elseif server.name == "denols" then
-		lsp_utils.configure_denols(opts)
+		lsp_utils.configure_denols(server)
 	elseif server.name == "emmet_ls" then
-		lsp_utils.configure_emmet_ls(opts)
+		lsp_utils.configure_emmet_ls(server)
 	elseif server.name == "ts_ls" then
-		lsp_utils.configure_ts_ls(opts)
+		lsp_utils.configure_ts_ls(server)
 	elseif server.name == "hls" then
-		lsp_utils.configure_hls(opts)
+		lsp_utils.configure_hls(server)
 	elseif server.name == "purescriptls" then
-		lsp_utils.configure_purescriptls(opts)
-	elseif server.name == "tailwindcss" then
-		lsp_utils.configure_tailwindcss(server, opts)
+		lsp_utils.configure_purescriptls(server)
 	elseif server.name == "sourcekit" then
-		lsp_utils.configure_sourcekit(opts)
+		lsp_utils.configure_sourcekit(server)
 	end
 
-	server.setup(opts)
+	vim.lsp.enable(lsp)
 end

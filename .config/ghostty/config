@@ -1,7 +1,6 @@
 font-family = "JetBrainsMono Nerd Font"
 font-size = 22
 cursor-style = block_hollow
-theme = "catppuccin-frappe"
 window-padding-x = 4
 
 keybind = ctrl+a>w=new_split:up

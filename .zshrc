@@ -198,8 +198,6 @@ alias cd="z"
 alias purs-f="purs-tidy format-in-place"
 alias lzg="lazygit"
 
-. "$HOME/.deno/env"
-# Initialize zsh completions (added by deno install script)
 autoload -Uz compinit
 compinit
 eval "$(zoxide init zsh)"

@@ -1,4 +1,5 @@
 local plugs = require("sline.plugins")
+
 Statusline = {}
 
 local divider = "  "

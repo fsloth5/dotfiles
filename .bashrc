@@ -136,3 +136,4 @@ alias brc="nvim ~/.bashrc"
 [[ ${BLE_VERSION-} ]] && ble-attach
 
 source /Users/flyingsl0ths/.config/broot/launcher/bash/br
+. "/Users/flyingsl0ths/.deno/env"

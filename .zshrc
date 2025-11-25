@@ -1,4 +1,3 @@
-# Add deno completions to search path
 if [[ ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then export FPATH="$HOME/.zsh/completions:$FPATH"; fi
 
 export FZF_DEFAULT_COMMAND='fd --type d -H'
@@ -200,3 +199,5 @@ alias lzg="lazygit"
 autoload -Uz compinit
 compinit
 eval "$(zoxide init zsh)"
+
+. "/$HOME/.deno/env"

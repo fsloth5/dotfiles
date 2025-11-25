@@ -146,7 +146,6 @@ alias pf="paste_file"
 alias sp="scratchpad"
 alias fm="ranger"
 alias xtr="tar xf"
-alias code="vscodium"
 alias n="nvim"
 alias v="TERM=xterm-256color vim"
 

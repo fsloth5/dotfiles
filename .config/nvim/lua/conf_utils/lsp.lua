@@ -1,63 +1,38 @@
 local lsp_utils = require "lspconfig.util"
 
 return {
-	on_attach = function(_, bufnr)
-		local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+	on_attach =
+	    function(client, bufnr)
+		    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+		    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-		local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+		    -- Enable completion triggered by <c-x><c-o>
+		    buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
-		-- Enable completion triggered by <c-x><c-o>
-		buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+		    -- Mappings.
+		    local opts = { noremap = true, silent = true }
 
-		-- Mappings.
-		local opts = { noremap = true, silent = true }
-
-		-- See `:help vim.lsp.*` for documentation on any of the below functions
-		buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-
-		buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-
-		buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-
-		buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-
-		buf_set_keymap("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-
-		buf_set_keymap("n", "<space>wa",
-			"<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-
-		buf_set_keymap("n", "<space>wr",
-			"<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-
-		buf_set_keymap("n", "<space>wl",
-			"<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>",
-			opts)
-
-		buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>",
-			opts)
-
-		buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-
-		buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>",
-			opts)
-
-		buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-
-		buf_set_keymap("n", "ge",
-			"<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
-
-		buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
-
-		buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
-
-		buf_set_keymap("n", "<space>q",
-			"<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-
-		buf_set_keymap("n", "<space>fm", "<cmd>lua vim.lsp.buf.format { async = true }<CR>", opts)
-
-		buf_set_keymap("v", "<space>ca",
-			"<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
-	end,
+		    -- See `:help vim.lsp.*` for documentation on any of the below functions
+		    buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+		    buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+		    buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+		    buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+		    buf_set_keymap("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
+		    buf_set_keymap("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+		    buf_set_keymap("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+		    buf_set_keymap("n", "<space>wl",
+			    "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
+		    buf_set_keymap("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+		    buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+		    buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+		    buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+		    buf_set_keymap("n", "ge", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+		    buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+		    buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+		    buf_set_keymap("n", "<space>q", "<cmd>lua vim.diagnostic.setloclist()<CR>", opts)
+		    buf_set_keymap("n", "<space>fm", "<cmd>lua vim.lsp.buf.format { async = true }<CR>", opts)
+		    buf_set_keymap("v", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+	    end,
 
 	servers = {
 		"bashls",
@@ -90,33 +65,21 @@ return {
 		"zls",
 	},
 
-	configure_emmet_ls = function(opts)
-		opts.root_dir = function() return vim.loop.cwd() end
-	end,
+	clangd_config =
+	{ cmd = { "clangd", "--clang-tidy" } },
 
-	configure_clangd = function(server)
-		server.cmd = { "clangd", "--clang-tidy" }
-	end,
 
-	configure_ts_ls = function(server)
-		server.root_dir = lsp_utils.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json')
-		server.single_file_support = false
-	end,
+	denols_config =
+	{ root_dir = lsp_utils.root_pattern('deno.json', 'deno.jsonc') },
 
-	configure_denols = function(server)
-		server.root_dir = lsp_utils.root_pattern('deno.json', 'deno.jsonc')
-	end,
+	emmet_ls_config =
+	{ root_dir = function() return vim.loop.cwd() end },
 
-	configure_sourcekit = function(server)
-		server.filetypes = { "swift", "objc", "objcpp" }
-	end,
 
-	configure_purescriptls = function(server)
-		server.settings = { purescript = { formatter = "purs-tidy" } }
-	end,
 
-	configure_hls = function(server)
-		server.settings = {
+	hls_config =
+	{
+		settings = {
 			haskell = {
 				formattingProvider = "stylish-haskell",
 				plugin = {
@@ -126,5 +89,23 @@ return {
 				}
 			}
 		}
-	end,
+	}
+	,
+
+	lua_ls = { single_file_support = true },
+
+	purescriptls_config =
+	{ settings = { purescript = { formatter = "purs-tidy" } } }
+	,
+
+
+	sourcekit_config =
+	{ filetypes = { "swift", "objc", "objcpp" } },
+
+	ts_ls_config =
+	{
+		root_dir = lsp_utils.root_pattern('tsconfig.json', 'jsconfig.json', 'package.json'),
+		single_file_support = false
+	},
+
 }

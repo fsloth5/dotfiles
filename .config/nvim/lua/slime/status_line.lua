@@ -1,4 +1,4 @@
-local plugs = require("sline.plugins")
+local plugs = require("slime.plugins")
 
 Statusline = {}
 

@@ -11,7 +11,7 @@ require "plugins"
 -- "GUI"
 require "plugins.theme"
 require "plugins.buffline"
-require "sline"
+require "slime"
 --
 
 --- EDITOR

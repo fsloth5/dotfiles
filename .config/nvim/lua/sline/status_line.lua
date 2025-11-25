@@ -11,9 +11,9 @@ function Statusline.active()
 		"%f",
 		divider,
 		"%=",
-		plugs.lsp_name(),
-		divider,
 		plugs.file_type(),
+		divider,
+		plugs.lsp_status(),
 		divider,
 		"%p%% %l:%c "
 	}

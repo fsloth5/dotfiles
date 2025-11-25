@@ -17,11 +17,17 @@ _G.StatuslineHandlers = {
 		    local buf = vim.api.nvim_create_buf(false, true)
 
 
+		    -- Set content
+		    local function center_text(text, width)
+			    local padding = math.floor((width - #text) / 2)
+			    return string.rep(" ", padding) .. text
+		    end
+
 		    local width = 50
 
-		    -- Set content
+
 		    vim.api.nvim_buf_set_lines(buf, 0, -1, false, {
-			    " LSP Information  ",
+			    center_text(" LSP Information  ", width),
 			    string.rep("──", width / 2),
 			    "Active LSP clients:",
 		    })
@@ -50,7 +56,7 @@ _G.StatuslineHandlers = {
 		    }
 
 		    -- Create window
-		    local win = vim.api.nvim_open_win(buf, true, opts)
+		    vim.api.nvim_open_win(buf, true, opts)
 
 		    -- Set buffer options
 		    vim.api.nvim_buf_set_option(buf, 'modifiable', false)

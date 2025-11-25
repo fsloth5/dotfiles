@@ -1,6 +1,3 @@
-
-local lspconfig = require "lspconfig"
-
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "single" })
 
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "single" })
@@ -28,62 +25,64 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 	}
 )
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local my_capabilities = vim.lsp.protocol.make_client_capabilities()
 
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+my_capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-capabilities.textDocument.completion.completionItem.documentationFormat = {
+my_capabilities.textDocument.completion.completionItem.documentationFormat = {
 	"markdown", "plaintext"
 }
 
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.preselectSupport = true
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-capabilities.textDocument.completion.completionItem.tagSupport = {
+my_capabilities.textDocument.completion.completionItem.snippetSupport = true
+my_capabilities.textDocument.completion.completionItem.preselectSupport = true
+my_capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+my_capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+my_capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+my_capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+my_capabilities.textDocument.completion.completionItem.tagSupport = {
 	valueSet = { 1 }
 }
-capabilities.textDocument.completion.completionItem.resolveSupport = {
+my_capabilities.textDocument.completion.completionItem.resolveSupport = {
 	properties = { "documentation", "detail", "additionalTextEdits" }
 }
 
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+my_capabilities = require('cmp_nvim_lsp').default_capabilities(my_capabilities)
 
 local lsp_utils = require "conf_utils.lsp"
 
 local servers = lsp_utils.servers
 
 for _, lsp in pairs(servers) do
-	local server = vim.lsp.config[lsp]
+	local default_config = vim.lsp.config[lsp]
 
-	server.on_attach = function(_, bufnr)
-		lsp_utils.on_attach.on_attach(_,bufnr)
-		server.on_attach(_, bufnr)
+	default_config.on_attach = lsp_utils.on_attach
+
+	local default_capabilities = default_config.capabilities
+
+	default_config.capabilities = default_capabilities and
+	    vim.tbl_deep_extend('force', default_config.capabilities, my_capabilities) or my_capabilities
+
+	local overridden = nil
+
+	if lsp == "clangd" then
+		overridden = lsp_utils.clangd_config
+	elseif lsp == "denols" then
+		overridden = lsp_utils.denols_config
+	elseif lsp == "emmet_ls" then
+		overridden = lsp_utils.emmet_ls_config
+	elseif lsp == "hls" then
+		overridden = lsp_utils.hls_config
+	elseif lsp == "lua_ls" then
+		overridden = lsp_utils.lua_ls
+	elseif lsp == "ts_ls" then
+		overridden = lsp_utils.ts_ls_config
+	elseif lsp == "purescriptls" then
+		overridden = lsp_utils.purescriptls_config
+	elseif lsp == "sourcekit" then
+		overridden = lsp_utils.sourcekit_config
 	end
 
-	local server_caps = server.capabilities
-	for k,v in ipairs(capabilities) do 
-		server_caps[k] = v
-	end
-
-
-	if server.name == "clangd" then
-		lsp_utils.configure_clangd(server)
-	elseif server.name == "denols" then
-		lsp_utils.configure_denols(server)
-	elseif server.name == "emmet_ls" then
-		lsp_utils.configure_emmet_ls(server)
-	elseif server.name == "ts_ls" then
-		lsp_utils.configure_ts_ls(server)
-	elseif server.name == "hls" then
-		lsp_utils.configure_hls(server)
-	elseif server.name == "purescriptls" then
-		lsp_utils.configure_purescriptls(server)
-	elseif server.name == "sourcekit" then
-		lsp_utils.configure_sourcekit(server)
-	end
+	vim.lsp.config(lsp, overridden and vim.tbl_deep_extend('force', default_config, overridden) or default_config)
 
 	vim.lsp.enable(lsp)
 end

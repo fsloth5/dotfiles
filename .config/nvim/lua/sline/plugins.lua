@@ -19,7 +19,9 @@ _G.StatuslineHandlers = {
 
 		    -- Set content
 		    local function center_text(text, width)
-			    local padding = math.floor((width - #text) / 2)
+			    -- Use vim.fn.strwidth for proper Unicode width calculation
+			    local text_width = vim.fn.strwidth(text)
+			    local padding = math.floor((width - text_width) / 2)
 			    return string.rep(" ", padding) .. text
 		    end
 

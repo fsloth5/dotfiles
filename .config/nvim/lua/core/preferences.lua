@@ -43,6 +43,7 @@ vim.cmd "set tags=tags;~"
 vim.o.lazyredraw = false
 vim.o.termguicolors = true
 vim.o.spelllang = "en_us"
+vim.opt.laststatus = 2
 vim.cmd "set clipboard+=unnamedplus"
 vim.cmd "set path+=**"
 vim.cmd "set noswapfile"

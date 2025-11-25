@@ -59,7 +59,7 @@ for _, lsp in pairs(servers) do
 	local server = vim.lsp.config[lsp]
 
 	server.on_attach = function(_, bufnr)
-		lsp_utils.on_attach.on_attach(_,bufnr)	
+		lsp_utils.on_attach.on_attach(_,bufnr)
 		server.on_attach(_, bufnr)
 	end
 

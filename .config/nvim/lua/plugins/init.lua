@@ -48,14 +48,19 @@ local plugins = {
 		}
 	},
 
-	{
-		'feline-nvim/feline.nvim',
-		dependencies = {
-			"lewis6991/gitsigns.nvim",
-			"kyazdani42/nvim-web-devicons",
-			opts = {}
-		}
-	},
+        {
+            "lewis6991/gitsigns.nvim",
+            lazy = false,
+            config = true,
+        },
+
+	-- {
+	-- 	'feline-nvim/feline.nvim',
+	-- 	dependencies = {
+	-- 		"kyazdani42/nvim-web-devicons",
+	-- 		opts = {}
+	-- 	}
+	-- },
 
 	{
 		'goolord/alpha-nvim',

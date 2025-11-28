@@ -31,7 +31,6 @@ require "plugins.lsp"
 
 --   LSP-TOOLS
 require "plugins.treesitter"
-require "plugins.tag_bar"
 --
 
 --   TOOLS

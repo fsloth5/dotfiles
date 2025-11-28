@@ -147,11 +147,6 @@ local plugins = {
 	"mfussenegger/nvim-dap-python",
 	"jbyuki/one-small-step-for-vimkind",
 
-	{
-		"simrat39/symbols-outline.nvim",
-		opts = {}
-	},
-
 	"szw/vim-maximizer",
 	"norcalli/nvim-colorizer.lua",
 

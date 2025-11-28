@@ -117,7 +117,6 @@ vim.keymap.set("n", "<leader>dt", ":lua require('dap').terminate()<CR>", default
 vim.keymap.set("n", "<leader>lz", ":Lazy<CR>", default_options)
 vim.keymap.set("n", "<leader>d", ":NvimTreeToggle<CR>", default_options)
 vim.keymap.set("n", "<leader>sr", ":source %<CR>", default_options)
-vim.keymap.set("n", "<leader>ss", ":SymbolsOutline<CR>", default_options)
 vim.keymap.set("n", "<leader>cu", ":source $MYVIMRC<CR>", default_options)
 
 -- Etc

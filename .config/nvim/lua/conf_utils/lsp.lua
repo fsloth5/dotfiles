@@ -65,6 +65,10 @@ return {
 		"zls",
 	},
 
+	bashls_config = {
+		filetypes = { "bash", "sh", "zsh" }
+	},
+
 	clangd_config =
 	{ cmd = { "clangd", "--clang-tidy" } },
 

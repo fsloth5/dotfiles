@@ -64,7 +64,9 @@ for _, lsp in pairs(servers) do
 
 	local overridden = nil
 
-	if lsp == "clangd" then
+	if lsp == "bashls" then
+		overridden = lsp_utils.bashls_config
+	elseif lsp == "clangd" then
 		overridden = lsp_utils.clangd_config
 	elseif lsp == "denols" then
 		overridden = lsp_utils.denols_config

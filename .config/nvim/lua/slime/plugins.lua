@@ -133,4 +133,19 @@ return {
 	end,
 
 	lsp_status = lsp_status,
+
+	os_name = function()
+		local os_name = vim.loop.os_uname().sysname
+		local os_icon = ""
+
+		if os_name == "Mac" then
+			os_icon = " "
+		elseif os_name == "Linux" then
+			os_icon = "󰣠 "
+		else
+			os_icon = " "
+		end
+
+		return os_icon ~= "" and (os_name .. " " .. os_icon) or os_name
+	end,
 }

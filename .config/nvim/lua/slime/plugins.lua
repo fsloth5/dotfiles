@@ -35,7 +35,7 @@ _G.StatuslineHandlers = {
 		    })
 
 		    -- Add LSP client names
-		    local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+		    local clients = vim.lsp.get_clients({ bufnr = 0 })
 		    for _, client in ipairs(clients) do
 			    vim.api.nvim_buf_set_lines(buf, -1, -1, false, { "  • " .. client.name })
 		    end
@@ -78,7 +78,7 @@ vim.cmd([[
 
 -- In your statusline
 local function lsp_status()
-	local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+	local clients = vim.lsp.get_clients({ bufnr = 0 })
 	if #clients == 0 then
 		return ""
 	end
@@ -127,7 +127,7 @@ return {
 
 	lsp_name = function()
 		-- The second entry is used in case Copilot plugin is present
-		local client = vim.lsp.get_active_clients({ bufnr = 0 })[1]
+		local client = vim.lsp.get_clients({ bufnr = 0 })[1]
 		local client_name = client and client.name or ""
 		return (client_name ~= "") and table.concat { "󰣩 ", client_name } or ""
 	end,

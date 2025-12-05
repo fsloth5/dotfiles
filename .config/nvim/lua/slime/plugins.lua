@@ -138,7 +138,8 @@ return {
 		local os_name = vim.loop.os_uname().sysname
 		local os_icon = ""
 
-		if os_name == "Mac" then
+		if os_name == "Darwin" then
+			os_name = "Mac"
 			os_icon = " "
 		elseif os_name == "Linux" then
 			os_icon = "󰣠 "

@@ -77,16 +77,6 @@ vim.cmd([[
   endfunction]])
 
 -- In your statusline
-local function lsp_status()
-	local clients = vim.lsp.get_clients({ bufnr = 0 })
-	if #clients == 0 then
-		return ""
-	end
-
-
-	local text = #clients > 1 and " +" .. #clients or "󰣩 " .. clients[1].name
-	return "%@OpenLspInfo@" .. text .. "%X"
-end
 
 return {
 	git = function()
@@ -132,7 +122,17 @@ return {
 		return (client_name ~= "") and table.concat { "󰣩 ", client_name } or ""
 	end,
 
-	lsp_status = lsp_status,
+	lsp_status =
+	    function()
+		    local clients = vim.lsp.get_clients({ bufnr = 0 })
+		    if #clients == 0 then
+			    return ""
+		    end
+
+
+		    local text = #clients > 1 and " +" .. #clients or "󰣩 " .. clients[1].name
+		    return "%@OpenLspInfo@" .. text .. "%X"
+	    end,
 
 	os_name = function()
 		local os_name = vim.loop.os_uname().sysname

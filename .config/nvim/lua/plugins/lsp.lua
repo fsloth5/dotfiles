@@ -2,18 +2,29 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { 
 
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "single" })
 
-local signs = {
+local my_signs = {
 	ERROR = '',
 	WARN = '',
 	HINT = '',
 	INFO = '',
 }
 
-for _, type in ipairs({ "Error", "Warn", "Info", "Hint" }) do
-	local hl = "DiagnosticSign" .. type
-	local hl2 = "Diagnostic" .. type
-	vim.fn.sign_define(hl, { text = signs[type:upper()], texthl = hl2, numhl = hl2 })
-end
+vim.diagnostic.config(
+	{
+		virtual_text = false,
+		signs = {
+			text = {
+				[vim.diagnostic.severity.ERROR] = my_signs.ERROR,
+				[vim.diagnostic.severity.WARN] = my_signs.WARN,
+				[vim.diagnostic.severity.HINT] = my_signs.HINT,
+				[vim.diagnostic.severity.INFO] = my_signs.INFO,
+			}
+		},
+		update_in_insert = false,
+		underline = true,
+
+	}
+)
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 	vim.lsp.diagnostic.on_publish_diagnostics,

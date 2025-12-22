@@ -62,6 +62,7 @@ return {
 		"sourcekit",
 		"tailwindcss",
 		"ts_ls",
+		"ty",
 		"zls",
 	},
 
